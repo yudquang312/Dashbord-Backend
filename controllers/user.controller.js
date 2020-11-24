@@ -116,13 +116,11 @@ const userCtl = {
             }
 
             const refresh_token = createRefreshToken({ id: user.id })
-
             res.cookie('refresh_token', refresh_token, {
-                httpOnly: true,
-                path: 'user/refresh_token',
+                httpOnly: false,
                 maxAge: 7 * 24 * 60 * 60 * 1000, // 7 days
             })
-
+            // console.log(res)
             res.status(200).json({ msg: 'Login success!' })
         } catch (e) {
             return res.status(500).json({

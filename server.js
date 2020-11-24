@@ -8,13 +8,24 @@ const path = require('path')
 
 const app = express()
 app.use(express.json())
-app.use(cors())
+const header = {
+    'Access-Control-Allow-Origin': '*',
+}
+app.use(
+    cors({
+        origin: 'http://localhost:3000',
+        method: 'GET,HEAD,PUT,PATCH,DELETE,POST',
+        allowedHeaders: 'Content-Type, Accept, Authorization',
+        credentials: true,
+    }),
+)
 app.use(cookieParser())
 app.use(
     fileUpload({
         useTempFiles: true,
     }),
 )
+// app.options('*', cors())
 
 app.use('/user', require('./routes/user.router'))
 app.use('/api', require('./routes/category.route'))
