@@ -223,7 +223,7 @@ const userCtl = {
     },
     logout: async (req, res) => {
         try {
-            res.clearCookie('refreshtoken', { path: '/user/refresh_token' })
+            res.clearCookie('refresh_token')
             return res.status(200).json({ msg: 'Logged out.' })
         } catch (err) {
             return res.status(500).json({ msg: err.message })
@@ -325,8 +325,6 @@ const userCtl = {
                 .then((res) => res)
 
             const { id, email, name, picture } = data
-
-            console.log(id, email, name, picture)
 
             if (!email)
                 return res
