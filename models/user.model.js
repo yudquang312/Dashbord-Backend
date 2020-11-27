@@ -20,21 +20,38 @@ const userSchema = new mongoose.Schema(
             type: Number,
             default: 0,
         },
-        cart: {
-            type: Array,
-            default: [],
-        },
-        male: {
+        gender: {
             type: Number,
             default: 0,
         },
         avatar: {
-            type: 'String',
+            type: String,
             default:
                 'https://res.cloudinary.com/thaovan/image/upload/v1606099416/Dinosuar_shop/avatar/male.jpg',
         },
         facebookId: {
-            type: 'String',
+            type: String,
+        },
+        nation: {
+            type: String,
+        },
+        provincial: {
+            type: String,
+        },
+        district: {
+            type: String,
+        },
+        wards: {
+            type: String,
+        },
+        address: {
+            type: String,
+        },
+        phone: {
+            type: String,
+        },
+        deletedAt: {
+            type: Date,
         },
     },
     {
