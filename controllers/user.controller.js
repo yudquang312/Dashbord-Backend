@@ -118,7 +118,7 @@ const userCtl = {
             const refresh_token = createRefreshToken({ id: user.id })
             res.cookie('refresh_token', refresh_token, {
                 httpOnly: false,
-                maxAge: 7 * 24 * 60 * 60 * 1000, // 7 days
+                maxAge: 30 * 24 * 60 * 60 * 1000, // 7 days
             })
             // console.log(res)
             res.status(200).json({ msg: 'Login success!' })
@@ -256,10 +256,32 @@ const userCtl = {
     },
     updateUser: async (req, res) => {
         try {
-            const { name, avatar } = req.body
-            const data = { name, avatar }
-
-            _.omitBy(data, _.isNull)
+            const {
+                name,
+                avatar,
+                gender,
+                nation,
+                provincial,
+                district,
+                wards,
+                address,
+                phone,
+            } = req.body
+            const data = {
+                name,
+                avatar,
+                gender,
+                nation,
+                provincial,
+                district,
+                wards,
+                address,
+                phone,
+            }
+            for (let key in data) {
+                if (!data[key]) delete data[key]
+            }
+            console.log(data)
             await User.findOneAndUpdate({ _id: req.user.id }, data)
 
             res.status(200).json({ msg: 'Update Success!' })
@@ -289,7 +311,7 @@ const userCtl = {
                 res.cookie('refresh_token', refresh_token, {
                     httpOnly: true,
                     path: '/user/refresh_token',
-                    maxAge: 7 * 24 * 60 * 60 * 1000, // 7 ngay
+                    maxAge: 30 * 24 * 60 * 60 * 1000, // 7 ngay
                 })
                 res.status(200).json({ msg: 'Login succes' })
             } else {
@@ -306,7 +328,7 @@ const userCtl = {
                 res.cookie('refresh_token', refresh_token, {
                     httpOnly: true,
                     path: '/user/refresh_token',
-                    maxAge: 7 * 24 * 60 * 60 * 1000, // 7 ngay
+                    maxAge: 30 * 24 * 60 * 60 * 1000, // 7 ngay
                 })
                 res.status(200).json({ msg: 'Login succes' })
             }
@@ -342,7 +364,7 @@ const userCtl = {
                 res.cookie('refresh_token', refresh_token, {
                     httpOnly: true,
                     path: '/user/refresh_token',
-                    maxAge: 7 * 24 * 60 * 60 * 1000, // 7 ngay
+                    maxAge: 30 * 24 * 60 * 60 * 1000, // 7 ngay
                 })
                 res.status(200).json({ msg: 'Login succes' })
             } else {
@@ -359,7 +381,7 @@ const userCtl = {
                 res.cookie('refresh_token', refresh_token, {
                     httpOnly: true,
                     path: '/user/refresh_token',
-                    maxAge: 7 * 24 * 60 * 60 * 1000, // 7 ngay
+                    maxAge: 30 * 24 * 60 * 60 * 1000, // 7 ngay
                 })
                 res.status(200).json({ msg: 'Login succes' })
             }
@@ -404,9 +426,9 @@ const createActivationToken = (payload) =>
     jwt.sign(payload, ACTIVATION_TOKEN_SECRET, { expiresIn: '5m' })
 
 const createAccessToken = (payload) =>
-    jwt.sign(payload, ACCESS_TOKEN_SECRET, { expiresIn: '1m' })
+    jwt.sign(payload, ACCESS_TOKEN_SECRET, { expiresIn: '1d' })
 
 const createRefreshToken = (payload) =>
-    jwt.sign(payload, REFRESH_TOKEN_SECRET, { expiresIn: '7d' })
+    jwt.sign(payload, REFRESH_TOKEN_SECRET, { expiresIn: '30d' })
 
 module.exports = userCtl

@@ -1,6 +1,7 @@
-const Size = require('../models/size.model')
+const Style = require('../models/style.model')
 const _ = require('lodash')
-const sizeCtl = {
+
+const styleCtl = {
     create: async (req, res, next) => {
         try {
             const { name } = req.body
@@ -9,25 +10,25 @@ const sizeCtl = {
                     msg: 'Please fill in all fields.',
                 })
             }
-            const size = await Size.findOne({ name })
+            const style = await Style.findOne({ name })
 
-            if (size) {
+            if (style) {
                 return res.status(400).json({
-                    msg: 'This size already exists .',
+                    msg: 'This style already exists .',
                 })
             }
-            const newSize = new Size({
+            const newStyle = new Style({
                 name,
             })
-            await newSize.save()
-            return res.status(201).json({ msg: 'Create Size success' })
+            await newStyle.save()
+            return res.status(201).json({ msg: 'Create style success' })
         } catch (err) {
             return res.status(500).json({ msg: err.message })
         }
     },
     delete: async (req, res, next) => {
         try {
-            await Size.findByIdAndDelete(req.params.id)
+            await Style.findByIdAndDelete(req.params.id)
 
             return res.status(200).json({ msg: 'Deleted Success!' })
         } catch (err) {
@@ -45,7 +46,7 @@ const sizeCtl = {
             const data = { name }
 
             _.omitBy(data, _.isNull)
-            await Size.findOneAndUpdate({ _id: id }, data)
+            await Style.findOneAndUpdate({ _id: id }, data)
 
             return res.status(200).json({ msg: 'Update Success!' })
         } catch (err) {
@@ -54,22 +55,22 @@ const sizeCtl = {
     },
     getAll: async (req, res, next) => {
         try {
-            const sizes = await Size.find()
+            const styles = await Style.find()
 
-            return res.status(200).json(sizes)
+            return res.status(200).json(styles)
         } catch (err) {
             return res.status(500).json({ msg: err.message })
         }
     },
     getOne: async (req, res, next) => {
         try {
-            const size = await Size.find(req.params.id)
+            const style = await Style.find(req.params.id)
 
-            return res.status(200).json(size)
+            return res.status(200).json(style)
         } catch (err) {
             return res.status(500).json({ msg: err.message })
         }
     },
 }
 
-module.exports = sizeCtl
+module.exports = styleCtl

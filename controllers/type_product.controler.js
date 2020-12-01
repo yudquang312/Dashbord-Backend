@@ -18,7 +18,6 @@ const typeProductCtl = {
             }
             const newTypeProduct = new TypeProduct({
                 name,
-                code,
             })
             await newTypeProduct.save()
             return res.status(201).json({ msg: 'Create type product success' })

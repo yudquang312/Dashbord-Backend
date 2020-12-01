@@ -64,6 +64,16 @@ const productSchema = new mongoose.Schema(
             type: mongoose.Schema.Types.ObjectId,
             ref: 'Promotion',
         },
+
+        limited: {
+            type: Boolean,
+            default: false,
+        },
+        style: {
+            type: mongoose.Schema.Types.ObjectId,
+            ref: 'Style',
+            required: true,
+        },
         createBy: {
             type: mongoose.Schema.Types.ObjectId,
             ref: 'User',

@@ -27,11 +27,12 @@ app.use(
 )
 // app.options('*', cors())
 
-app.use('/user', require('./routes/user.router'))
-app.use('/api', require('./routes/upload.router'))
-app.use('/api', require('./routes/color.router'))
-app.use('/api', require('./routes/size.router'))
-app.use('/api', require('./routes/type_product.router'))
+app.use('/user', require('./apis/user.api'))
+app.use('/api', require('./apis/upload.api'))
+app.use('/api', require('./apis/color.api'))
+app.use('/api', require('./apis/size.api'))
+app.use('/api', require('./apis/type_product.api'))
+app.use('/api', require('./apis/style.api'))
 //connect database
 require('./helper/init-mongoose')
 // Routes

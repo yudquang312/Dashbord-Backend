@@ -5,10 +5,12 @@ const colorSchema = new mongoose.Schema(
         name: {
             type: String,
             required: [true, 'Please enter color name '],
+            unique: true,
         },
         code: {
             type: String,
             required: [true, 'Please enter color code '],
+            unique: true,
         },
     },
     {
