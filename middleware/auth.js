@@ -8,6 +8,8 @@ const auth = async (req, res, next) => {
                 msg: 'Token does not exist',
             })
         }
+        const a = await jwt.decode(token)
+        console.log(a)
         jwt.verify(token, process.env.ACCESS_TOKEN_SECRET, (err, user) => {
             if (err) {
                 return res.status(400).json({

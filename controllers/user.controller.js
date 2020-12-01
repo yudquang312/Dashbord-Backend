@@ -15,7 +15,7 @@ const {
     REFRESH_TOKEN_SECRET,
 } = process.env
 const userCtl = {
-    register: async (req, res, nex) => {
+    register: async (req, res, next) => {
         try {
             const { email, password, name } = req.body
 
@@ -404,7 +404,7 @@ const createActivationToken = (payload) =>
     jwt.sign(payload, ACTIVATION_TOKEN_SECRET, { expiresIn: '5m' })
 
 const createAccessToken = (payload) =>
-    jwt.sign(payload, ACCESS_TOKEN_SECRET, { expiresIn: '15m' })
+    jwt.sign(payload, ACCESS_TOKEN_SECRET, { expiresIn: '1m' })
 
 const createRefreshToken = (payload) =>
     jwt.sign(payload, REFRESH_TOKEN_SECRET, { expiresIn: '7d' })

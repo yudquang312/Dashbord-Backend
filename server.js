@@ -13,7 +13,7 @@ const header = {
 }
 app.use(
     cors({
-        origin: 'http://localhost:3000',
+        origin: process.env.CLIENT_URL,
         method: 'GET,HEAD,PUT,PATCH,DELETE,POST',
         allowedHeaders: 'Content-Type, Accept, Authorization',
         credentials: true,
@@ -28,17 +28,14 @@ app.use(
 // app.options('*', cors())
 
 app.use('/user', require('./routes/user.router'))
+app.use('/api', require('./routes/upload.router'))
+app.use('/api', require('./routes/color.router'))
+app.use('/api', require('./routes/size.router'))
+app.use('/api', require('./routes/type_product.router'))
 //connect database
 require('./helper/init-mongoose')
 // Routes
-// app.use('/api', require('./routes/upload'))
 
-// if (process.env.NODE_ENV === 'production') {
-//     app.use(express.static('client/build'))
-//     app.get('*', (req, res) => {
-//         res.sendFile(path.join(__dirname, 'client', 'build', 'index.html'))
-//     })
-// }
 const PORT = process.env.PORT || 5000
 
 app.listen(PORT, () => console.log('Server is runing port ', PORT))
