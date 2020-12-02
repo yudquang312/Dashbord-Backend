@@ -107,24 +107,6 @@ const uploadCtl = {
 
             const results = await multiUpload
             res.status(200).json(results)
-            // const data = await req.files.file.map(async (file) => {
-            //     const tamp = {}
-            //     const results = await cloudinary.v2.uploader.upload(
-            //         file.tempFilePath,
-            //         {
-            //             folder: 'Dinosuar_shop/products',
-            //             width: 150,
-            //             height: 150,
-            //             crop: 'fill',
-            //         },
-            //     )
-            //     removeTmp(file.tempFilePath)
-            //     tamp.public_id = results.public_id
-            //     tamp.url = results.secure_url
-            //     console.log(tamp)
-            //     return tamp
-            // })
-            // return res.status(200).json(data)
         } catch (e) {
             return res.status(500).json({ msg: e.messages })
         }

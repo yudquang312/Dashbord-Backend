@@ -10,8 +10,16 @@ router.post(
     auth,
     upload.uploadAvatar,
 )
+
 router.post(
-    '/upload',
+    '/upload_single',
+    uploadImage.uploadSingleImage,
+    auth,
+    upload.upload,
+)
+
+router.post(
+    '/upload_multi',
     uploadImage.uploadMultipleImage,
     auth,
     upload.uploadProduct,
