@@ -6,23 +6,24 @@ const upload = require('../controllers/upload.controller')
 
 router.post(
     '/upload_avatar',
-    uploadImage.uploadSingleImage,
     auth,
+    uploadImage.uploadSingleImage,
     upload.uploadAvatar,
 )
 
 router.post(
     '/upload_single',
-    uploadImage.uploadSingleImage,
     auth,
+    uploadImage.uploadSingleImage,
     upload.upload,
 )
 
 router.post(
     '/upload_multi',
-    uploadImage.uploadMultipleImage,
     auth,
+    uploadImage.uploadMultipleImage,
     upload.uploadProduct,
 )
 router.post('/destroy/:public_id', auth, authAdmin, upload.delete)
+
 module.exports = router

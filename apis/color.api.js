@@ -12,4 +12,5 @@ router
     .get(colorCtl.getOne)
     .delete(auth, authAdmin, colorCtl.delete)
     .put(auth, authAdmin, colorCtl.update)
+
 module.exports = router

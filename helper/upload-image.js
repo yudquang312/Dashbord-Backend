@@ -32,7 +32,6 @@ const uploadMultipleImage = async (req, res, next) => {
             return res.status(400).json({
                 msg: 'No files were uploaded',
             })
-        console.log(req.files.file)
         req.files.file.map((file) => {
             if (file.size > 1024 * 1024) {
                 removeTmp(file.tempFilePath)
