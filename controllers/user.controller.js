@@ -101,7 +101,7 @@ const userCtl = {
     login: async (req, res, next) => {
         try {
             const { email, password } = req.body
-            const user = await User.findOne({ email })
+            const user = await User.findOne({ email, deletedAt: undefined })
 
             if (!user) {
                 return res
@@ -231,7 +231,10 @@ const userCtl = {
     },
     deleteUser: async (req, res) => {
         try {
-            await User.findByIdAndDelete(req.params.id)
+            await User.findByIdAndUpdate(
+                { _id: id, deletedAt: undefined },
+                { deletedAt: Date.now() },
+            )
 
             res.status(200).json({ msg: 'Deleted Success!' })
         } catch (err) {
@@ -281,7 +284,7 @@ const userCtl = {
             for (let key in data) {
                 if (!data[key]) delete data[key]
             }
-            console.log(data)
+
             await User.findOneAndUpdate({ _id: req.user.id }, data)
 
             res.status(200).json({ msg: 'Update Success!' })

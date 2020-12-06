@@ -34,6 +34,8 @@ app.use('/api', require('./apis/size.api'))
 app.use('/api', require('./apis/type_product.api'))
 app.use('/api', require('./apis/style.api'))
 app.use('/api', require('./apis/product.api'))
+app.use('/api', require('./apis/material.api'))
+app.use('/api', require('./apis/category.api'))
 //connect database
 require('./helper/init-mongoose')
 // Routes

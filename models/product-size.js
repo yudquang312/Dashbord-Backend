@@ -19,6 +19,7 @@ const productSizeSchema = new mongoose.Schema(
         sold: {
             type: Number,
             min: 0,
+            default: 0,
         },
     },
     {
