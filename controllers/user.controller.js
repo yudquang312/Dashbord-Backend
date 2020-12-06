@@ -392,7 +392,7 @@ const userCtl = {
             return res.status(500).json({ msg: err.message })
         }
     },
-    addCart: async (req, res, next) => {
+    changeCart: async (req, res, next) => {
         try {
             const { user, body } = req
             const existUser = await User.findById(user.id)
@@ -412,12 +412,6 @@ const userCtl = {
             return res.status(500).json({ msg: e.msg })
         }
     },
-    // history: async (req, res, next) => {
-    //     try {
-    //         const history = await Payments.find({ user_id: user.id })
-    //         res.json(history)
-    //     } catch (e) {}
-    // },
 }
 
 const validateEmail = (email) => {

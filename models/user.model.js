@@ -32,6 +32,17 @@ const userSchema = new mongoose.Schema(
         facebookId: {
             type: String,
         },
+        cart: [
+            {
+                productId: {
+                    type: mongoose.Schema.Types.ObjectId,
+                    ref: 'Product',
+                },
+                amount: {
+                    type: Number,
+                },
+            },
+        ],
         nation: {
             type: String,
         },
