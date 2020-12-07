@@ -14,6 +14,7 @@ const orderSchema = new mongoose.Schema(
         status: {
             type: Number,
             enum: [0, 1, 2], // 0: đang chờ xử lý, 1: đang giao, 2: Đã giao
+            default: 0,
         },
         expectedDate: {
             type: Date,
@@ -32,6 +33,7 @@ const orderSchema = new mongoose.Schema(
         VAT: {
             type: Number,
             default: 0,
+            min: 0,
         },
         products: [
             {
@@ -48,14 +50,17 @@ const orderSchema = new mongoose.Schema(
                 amount: {
                     type: Number,
                     required: [true, 'Amount is require'],
+                    min: 1,
                 },
                 price: {
                     type: Number,
                     required: [true, 'Price is require'],
+                    min: 0,
                 },
                 total: {
                     type: Number,
                     required: [true, 'Total is require'],
+                    min: 0,
                 },
             },
         ],
@@ -66,10 +71,12 @@ const orderSchema = new mongoose.Schema(
         shipMoney: {
             type: Number,
             required: [true, 'Have not ship money'],
+            min: 0,
         },
         total: {
             type: Number,
             required: [true, 'Total money is required'],
+            min: 0,
         },
         deletedAt: {
             type: Date,
