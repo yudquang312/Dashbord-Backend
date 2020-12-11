@@ -69,6 +69,7 @@ const productSchema = new mongoose.Schema(
                 amount: {
                     type: Number,
                     required: [true, 'Please enter amount'],
+                    min: 0,
                 },
                 sold: {
                     type: Number,

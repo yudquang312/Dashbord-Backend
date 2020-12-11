@@ -280,6 +280,70 @@ const productCtl = {
             return res.status(500).json({ msg: e.message })
         }
     },
+
+    decreaseAmount: async (req, res, next) => {
+        try {
+            let query = req.body.products.map((item) => {
+                return {
+                    updateOne: {
+                        filter: {
+                            _id: item.productId,
+                            'sizes.sizeId': item.sizeId,
+                        },
+                        update: {
+                            $inc: {
+                                'sizes.$.amount': -item.amount,
+                                'sizes.$.sold': +item.amount,
+                                amount: -item.amount,
+                                sold: +item.amount,
+                            },
+                        },
+                    },
+                }
+            })
+            Product.bulkWrite(query, {}, (err, products) => {
+                if (err) {
+                    return res.status(400).json({ msg: err.message })
+                } else {
+                    // return res.status(200).json(products)
+                    next()
+                }
+            })
+        } catch (e) {
+            return res.status(500).json({ msg: e.message })
+        }
+    },
+    creaseAmount: async (req, res, next) => {
+        try {
+            let query = req.body.products.map((item) => {
+                return {
+                    updateOne: {
+                        filter: {
+                            _id: item.productId,
+                            'sizes.sizeId': item.sizeId,
+                        },
+                        update: {
+                            $inc: {
+                                'sizes.$.amount': +item.amount,
+                                'sizes.$.sold': -item.amount,
+                                amount: +item.amount,
+                                sold: -item.amount,
+                            },
+                        },
+                    },
+                }
+            })
+            Product.bulkWrite(query, {}, (err, products) => {
+                if (err) {
+                    return res.status(400).json({ msg: err.message })
+                } else {
+                    return res.status(200).json(products)
+                }
+            })
+        } catch (e) {
+            return res.status(500).json({ msg: e.message })
+        }
+    },
 }
 
 module.exports = productCtl

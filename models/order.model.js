@@ -13,12 +13,17 @@ const orderSchema = new mongoose.Schema(
         },
         status: {
             type: Number,
-            enum: [0, 1, 2], // 0: đang chờ xử lý, 1: đang giao, 2: Đã giao
+            enum: [-1, 0, 1, 2], // 0: đang chờ lấy hàng, 1: đang giao, 2: Đã giao
+            default: -1,
+        },
+        confirm: {
+            type: Number,
+            enum: [-1, 0, 1],
             default: 0,
         },
         expectedDate: {
             type: Date,
-            default: Date.now() + 7 * 24 * 60 * 60 * 1000,
+            // default: Date.now() + 7 * 24 * 60 * 60 * 1000,
         },
         receivedDate: {
             type: Date,
@@ -57,11 +62,6 @@ const orderSchema = new mongoose.Schema(
                     required: [true, 'Price is require'],
                     min: 0,
                 },
-                total: {
-                    type: Number,
-                    required: [true, 'Total is require'],
-                    min: 0,
-                },
             },
         ],
         address: {
@@ -73,10 +73,20 @@ const orderSchema = new mongoose.Schema(
             required: [true, 'Have not ship money'],
             min: 0,
         },
+        intoMoney: {
+            type: Number,
+            required: [true, 'Into money is required'],
+            min: 0,
+        },
         total: {
             type: Number,
             required: [true, 'Total money is required'],
             min: 0,
+        },
+        note: {
+            type: String,
+            maxLength: 200,
+            default: '',
         },
         deletedAt: {
             type: Date,
