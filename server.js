@@ -6,12 +6,14 @@ const cookieParser = require('cookie-parser')
 const mongoose = require('mongoose')
 const path = require('path')
 const app = express()
+
 app.use(express.json())
 const header = {
     'Access-Control-Allow-Origin': '*',
 }
 app.use(
     cors({
+        credentials: true,
         origin: process.env.CLIENT_URL,
         method: 'GET,HEAD,PUT,PATCH,DELETE,POST',
         allowedHeaders: 'Content-Type, Accept, Authorization',
@@ -25,6 +27,14 @@ app.use(
         createParentPath: true,
     }),
 )
+
+const PORT = process.env.PORT || 5000
+
+// io.origin('*:*')
+const server = app.listen(PORT, () => {
+    console.log('Server is runing port ', PORT)
+})
+require('./socket')(server)
 // app.options('*', cors())
 
 app.use('/user', require('./apis/user.api'))
@@ -37,10 +47,7 @@ app.use('/api', require('./apis/product.api'))
 app.use('/api', require('./apis/material.api'))
 app.use('/api', require('./apis/category.api'))
 app.use('/api', require('./apis/order.api'))
+app.use('/api', require('./apis/comment.api'))
 //connect database
 require('./helper/init-mongoose')
 // Routes
-
-const PORT = process.env.PORT || 5000
-
-app.listen(PORT, () => console.log('Server is runing port ', PORT))
