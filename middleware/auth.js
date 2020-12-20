@@ -2,8 +2,10 @@ const jwt = require('jsonwebtoken')
 
 const auth = async (req, res, next) => {
     try {
+        console.log(req.headers.authorization)
         const token = req.headers.authorization
         if (!token) {
+            console.log(1)
             return res.status(400).json({
                 msg: 'Token does not exist',
             })

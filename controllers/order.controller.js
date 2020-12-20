@@ -4,6 +4,7 @@ const APIfeatures = require('../helper/filter')
 
 const orderCtl = {
     checkOrder: async (req, res, next) => {
+        console.log(3)
         try {
             const products = req.body.products
             const query = products.map((pd) => ({
@@ -53,8 +54,14 @@ const orderCtl = {
     },
     create: async (req, res, next) => {
         try {
-            console.log(1)
-            const { promotion, products, address, shipMoney, note } = req.body
+            const {
+                promotion,
+                products,
+                address,
+                shipMoney,
+                note,
+                typePayment,
+            } = req.body
 
             if (!products || products.length === 0 || !address || !shipMoney) {
                 return res.status(400).json({
@@ -63,7 +70,10 @@ const orderCtl = {
             }
 
             const total = products.reduce((a, b) => a + b.price * b.amount, 0)
-
+            let payment = {}
+            if (typePayment > 0) {
+                ;(payment.typePayment = typePayment), (payment.status = 1)
+            }
             const data = {
                 promotion,
                 products,
@@ -73,6 +83,7 @@ const orderCtl = {
                 total: total + shipMoney,
                 user: req.user.id,
                 note: note ? note : '',
+                payment,
             }
 
             if (!promotion) delete data['promotion']

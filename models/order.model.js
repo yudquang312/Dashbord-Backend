@@ -83,6 +83,21 @@ const orderSchema = new mongoose.Schema(
             required: [true, 'Total money is required'],
             min: 0,
         },
+        // payment: {
+        //     typePayment: {
+        //         type: Number,
+        //         enum: [0, 1],
+        //         default: 0,
+        //     },
+        //     status: {
+        //         type: Number,
+        //         enum: [0, 1],
+        //         default: 0,
+        //     },
+        //     datePayment: {
+        //         type: Date,
+        //     },
+        // },
         note: {
             type: String,
             maxLength: 200,
