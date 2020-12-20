@@ -41,7 +41,7 @@ const paymentCtl = {
             // if (!promotion) delete data['promotion']
 
             // const order = new Order(data)
-            const total = +req.body.total
+            // const total = +req.body.total
             var ipAddr =
                 req.headers['x-forwarded-for'] ||
                 req.connection.remoteAddress ||
@@ -57,8 +57,8 @@ const paymentCtl = {
 
             var createDate = dateformat(date, 'yyyymmddHHmmss')
             var orderId = dateformat(date, 'HHmmss')
-            var amount = req.body.amount
-            var bankCode = req.body.bankCode
+            // var amount = req.body.amount
+            // var bankCode = req.body.bankCode
 
             let vnp_Params = {
                 vnp_Version: 2,
