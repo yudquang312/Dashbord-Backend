@@ -40,9 +40,9 @@ const colorCtl = {
     },
     update: async (req, res, next) => {
         try {
-            const { name, color } = req.body
+            const { name, code } = req.body
             const { id } = req.params
-            const data = { name, color }
+            const data = { name, code }
             const color = await Color.findOne({ _id: id })
             if (!color) {
                 return res.status(400).json({ msg: 'Color not found' })
