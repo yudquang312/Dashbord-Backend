@@ -4,11 +4,11 @@ const auth = require('../middleware/auth')
 const authAdmin = require('../middleware/authAdmin')
 
 router
-    .route('/material')
+    .route('/materials')
     .get(materialCtl.getAll)
     .post(auth, authAdmin, materialCtl.create)
 router
-    .route('/material/:id')
+    .route('/materials/:id')
     .get(materialCtl.getOne)
     .delete(auth, authAdmin, materialCtl.delete)
     .put(auth, authAdmin, materialCtl.update)

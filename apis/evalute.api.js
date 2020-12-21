@@ -4,12 +4,12 @@ const auth = require('../middleware/auth')
 const authAdmin = require('../middleware/authAdmin')
 
 router
-    .route('/evalute')
+    .route('/evalutes')
     .post(auth, evaluteCtl.create)
     .get(auth, authAdmin, evaluteCtl.getAllByAdmin)
 
-router.route('/product/:id/evalute').get(evaluteCtl.getAllByProduct)
+router.route('/product/:id/evalutes').get(evaluteCtl.getAllByProduct)
 router
-    .route('/evalute/:id')
+    .route('/evalutes/:id')
     .get(auth, evaluteCtl.getOne)
     .delete(auth, authAdmin, evaluteCtl.delete)

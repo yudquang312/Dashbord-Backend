@@ -4,13 +4,13 @@ const auth = require('../middleware/auth')
 const authAdmin = require('../middleware/authAdmin')
 
 router
-    .route('/comment')
+    .route('/comments')
     .post(auth, commentCtl.create)
     .get(auth, authAdmin, commentCtl.getAllByAdmin)
 
-router.route('/product/:id/comment').get(commentCtl.getAllByProduct)
+router.route('/product/:id/comments').get(commentCtl.getAllByProduct)
 router
-    .route('/comment/:id')
+    .route('/comments/:id')
     .get(auth, commentCtl.getOne)
     .delete(auth, authAdmin, commentCtl.delete)
     .patch(auth, authAdmin, commentCtl.confirmComment)

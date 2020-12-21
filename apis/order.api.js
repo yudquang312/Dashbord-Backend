@@ -4,21 +4,21 @@ const authAdmin = require('../middleware/authAdmin')
 const orderCtl = require('../controllers/order.controller')
 const productCtl = require('../controllers/product.controller')
 router
-    .route('/order')
+    .route('/orders')
     .get(auth, orderCtl.getAllOrderByUser)
     .post(auth, orderCtl.checkOrder, productCtl.decreaseAmount, orderCtl.create)
 
-router.route('/order/:id').get(auth, orderCtl.getOrderByUser)
-router.route('/admin/order').get(auth, authAdmin, orderCtl.getAllOrder)
+router.route('/orders/:id').get(auth, orderCtl.getOrderByUser)
+router.route('/admin/orders').get(auth, authAdmin, orderCtl.getAllOrder)
 router
-    .route('/admin/order/:id')
+    .route('/admin/orders/:id')
     .get(auth, authAdmin, orderCtl.getOrder)
     .patch(auth, authAdmin, orderCtl.updateStatusByAdmin)
     .delete(auth, authAdmin, orderCtl.detele)
 
 router
-    .route('/admin/order/confirm/:id')
+    .route('/admin/orders/confirm/:id')
     .patch(auth, authAdmin, orderCtl.cancel_confirmOrderByAdmin)
-router.route('/order/cancel/:id').patch(auth, orderCtl.cancelOrderByUser)
+router.route('/orders/cancel/:id').patch(auth, orderCtl.cancelOrderByUser)
 
 module.exports = router
