@@ -28,7 +28,10 @@ const colorCtl = {
     },
     delete: async (req, res, next) => {
         try {
-            await Color.findByIdAndDelete(req.params.id)
+            const { id } = req.params
+            const color = await Color.findOne({ _id: id })
+            if (!color) await Color.findOne({ _id: id })
+            await Color.updateOne({ _id: id }, { deletedAt: new Date() })
 
             return res.status(200).json({ msg: 'Deleted Success!' })
         } catch (err) {
@@ -37,10 +40,19 @@ const colorCtl = {
     },
     update: async (req, res, next) => {
         try {
-            const { id, name, color } = req.body
+            const { name, color } = req.body
+            const { id } = req.params
             const data = { name, color }
-
+            const color = await Color.findOne({ _id: id })
+            if (!color) {
+                return res.status(400).json({ msg: 'Color not found' })
+            }
             _.omitBy(data, _.isNull)
+
+            if (Object.keys(data).length === 0) {
+                return res.status(400).json({ msg: 'Not field to update' })
+            }
+
             await Color.findOneAndUpdate({ _id: id }, data)
 
             return res.status(200).json({ msg: 'Update Success!' })
@@ -59,7 +71,10 @@ const colorCtl = {
     },
     getOne: async (req, res, next) => {
         try {
-            const color = await Color.find(req.params.id)
+            const color = await Color.findOne({ _id: req.params.id })
+            if (!color) {
+                return res.status(400).json({ msg: 'Color not found' })
+            }
 
             return res.status(200).json(color)
         } catch (err) {

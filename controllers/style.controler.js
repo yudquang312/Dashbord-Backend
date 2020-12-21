@@ -28,7 +28,12 @@ const styleCtl = {
     },
     delete: async (req, res, next) => {
         try {
-            await Style.findByIdAndDelete(req.params.id)
+            const { id } = req.params
+            const style = await Style.findOne({ _id: id })
+            if (!style) {
+                return res.status(400).json({ msg: 'Style not found' })
+            }
+            await Style.updateOne({ _id: id }, { deletedAt: new Date() })
 
             return res.status(200).json({ msg: 'Deleted Success!' })
         } catch (err) {
@@ -37,7 +42,12 @@ const styleCtl = {
     },
     update: async (req, res, next) => {
         try {
-            const { id, name } = req.body
+            const { name } = req.body
+            const { id } = req.params
+            const style = await Style.findOne({ _id: id })
+            if (!style) {
+                return res.status(400).json({ msg: 'Style not found' })
+            }
             if (!name) {
                 return res.status(400).json({
                     msg: 'Please fill in all fields.',
@@ -46,7 +56,7 @@ const styleCtl = {
             const data = { name }
 
             _.omitBy(data, _.isNull)
-            await Style.findOneAndUpdate({ _id: id }, data)
+            await Style.updateOne({ _id: id }, data)
 
             return res.status(200).json({ msg: 'Update Success!' })
         } catch (err) {
@@ -64,7 +74,11 @@ const styleCtl = {
     },
     getOne: async (req, res, next) => {
         try {
-            const style = await Style.find(req.params.id)
+            const { id } = req.params
+            const style = await Style.findOne({ _id: id })
+            if (!style) {
+                return res.status(400).json({ msg: 'Style not found' })
+            }
 
             return res.status(200).json(style)
         } catch (err) {

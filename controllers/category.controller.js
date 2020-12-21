@@ -27,7 +27,13 @@ const categoryCtl = {
     },
     delete: async (req, res, next) => {
         try {
-            await Category.findByIdAndDelete(req.params.id)
+            const { id } = req.params
+            const category = await Category.findOne({ _id: id })
+            if (!category) {
+                return res.status(400).json({ msg: 'Category not found' })
+            }
+
+            await Category.updateOne({ _id: id }, { deletedAt: new Date() })
 
             return res.status(200).json({ msg: 'Deleted Success!' })
         } catch (err) {
@@ -36,7 +42,12 @@ const categoryCtl = {
     },
     update: async (req, res, next) => {
         try {
-            const { id, name } = req.body
+            const { name } = req.body
+            const { id } = req.params
+            const category = await Category.findOne({ _id: id })
+            if (!category) {
+                return res.status(400).json({ msg: 'Category not found' })
+            }
             if (!name) {
                 return res.status(400).json({
                     msg: 'Please fill in all fields.',
@@ -45,7 +56,7 @@ const categoryCtl = {
             const data = { name }
 
             _.omitBy(data, _.isNull)
-            await Category.findOneAndUpdate({ _id: id }, data)
+            await Category.updateOne({ _id: id }, data)
 
             return res.status(200).json({ msg: 'Update Success!' })
         } catch (err) {
@@ -63,7 +74,11 @@ const categoryCtl = {
     },
     getOne: async (req, res, next) => {
         try {
-            const category = await Category.find(req.params.id)
+            const { id } = req.params
+            const category = await Category.findOne({ _id: id })
+            if (!category) {
+                return res.status(400).json({ msg: 'Category not found' })
+            }
 
             return res.status(200).json(category)
         } catch (err) {

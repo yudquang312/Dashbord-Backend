@@ -27,7 +27,12 @@ const typeProductCtl = {
     },
     delete: async (req, res, next) => {
         try {
-            await TypeProduct.findByIdAndDelete(req.params.id)
+            const { id } = req.params
+            const typePd = await typeProductCtl.findOne({ _id: id })
+            if (!typePd) {
+                return res.status(400).json({ msg: 'Type product not found' })
+            }
+            await TypeProduct.updateOne({ _id: id }, { deletedAt: new Date() })
 
             return res.status(200).json({ msg: 'Deleted Success!' })
         } catch (err) {
@@ -36,7 +41,13 @@ const typeProductCtl = {
     },
     update: async (req, res, next) => {
         try {
-            const { id, name } = req.body
+            const { name } = req.body
+            const { id } = req.params
+
+            const typePd = await TypeProduct.findOne({ _id: id })
+            if (!typePd) {
+                return res.status(400).json({ msg: 'Type product not found' })
+            }
             if (!name) {
                 return res.status(400).json({
                     msg: 'Please fill in all fields.',
@@ -45,7 +56,7 @@ const typeProductCtl = {
             const data = { name }
 
             _.omitBy(data, _.isNull)
-            await TypeProduct.findOneAndUpdate({ _id: id }, data)
+            await TypeProduct.updateOne({ _id: id }, data)
 
             return res.status(200).json({ msg: 'Update Success!' })
         } catch (err) {
@@ -63,9 +74,13 @@ const typeProductCtl = {
     },
     getOne: async (req, res, next) => {
         try {
-            const typeProduct = await TypeProduct.find(req.params.id)
+            const { id } = req.params
+            const typePD = await TypeProduct.findOne({ _id: id })
+            if (!typePd) {
+                return res.status(400).json({ msg: 'Type product not found' })
+            }
 
-            return res.status(200).json(typeProduct)
+            return res.status(200).json(typePD)
         } catch (err) {
             return res.status(500).json({ msg: err.message })
         }

@@ -227,7 +227,6 @@ const productCtl = {
             if (!product) {
                 return res.status(400).json({ msg: 'Product not found' })
             }
-
             const {
                 name,
                 type,

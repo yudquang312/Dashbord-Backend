@@ -27,7 +27,14 @@ const materialCtl = {
     },
     delete: async (req, res, next) => {
         try {
-            await Material.findByIdAndDelete(req.params.id)
+            const { id } = req.params
+            const material = await Material.findOne({ _id: id })
+
+            if (!material) {
+                return res.status(404).json({ msg: 'Material not found' })
+            }
+
+            await Material.updateOne({ _id: id }, { deletedAt: new Date() })
 
             return res.status(200).json({ msg: 'Deleted Success!' })
         } catch (err) {
@@ -36,7 +43,13 @@ const materialCtl = {
     },
     update: async (req, res, next) => {
         try {
-            const { id, name } = req.body
+            const { name } = req.body
+            const { id } = req.params
+
+            const material = await Material.findOne({ _id: id })
+            if (!material) {
+                return res.status(400).json({ msg: 'Material not found' })
+            }
             if (!name) {
                 return res.status(400).json({
                     msg: 'Please fill in all fields.',
@@ -63,8 +76,10 @@ const materialCtl = {
     },
     getOne: async (req, res, next) => {
         try {
-            const material = await Material.find(req.params.id)
-
+            const material = await Material.findOne(req.params.id)
+            if (!material) {
+                return res.status(400).json({ msg: 'Material not found' })
+            }
             return res.status(200).json(material)
         } catch (err) {
             return res.status(500).json({ msg: err.message })

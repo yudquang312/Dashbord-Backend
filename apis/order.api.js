@@ -9,7 +9,6 @@ router
     .post(auth, orderCtl.checkOrder, productCtl.decreaseAmount, orderCtl.create)
 
 router.route('/order/:id').get(auth, orderCtl.getOrderByUser)
-
 router.route('/admin/order').get(auth, authAdmin, orderCtl.getAllOrder)
 router
     .route('/admin/order/:id')
@@ -21,4 +20,5 @@ router
     .route('/admin/order/confirm/:id')
     .patch(auth, authAdmin, orderCtl.cancel_confirmOrderByAdmin)
 router.route('/order/cancel/:id').patch(auth, orderCtl.cancelOrderByUser)
+
 module.exports = router

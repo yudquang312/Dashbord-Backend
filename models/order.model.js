@@ -83,21 +83,23 @@ const orderSchema = new mongoose.Schema(
             required: [true, 'Total money is required'],
             min: 0,
         },
-        // payment: {
-        //     typePayment: {
-        //         type: Number,
-        //         enum: [0, 1],
-        //         default: 0,
-        //     },
-        //     status: {
-        //         type: Number,
-        //         enum: [0, 1],
-        //         default: 0,
-        //     },
-        //     datePayment: {
-        //         type: Date,
-        //     },
-        // },
+        typePayment: {
+            type: Number,
+            enum: [0, 1],
+            default: 0,
+        },
+        vnpay: {
+            amount: { type: Number },
+            cardType: { type: String },
+            bankCode: { type: String },
+            tmnCode: { type: String },
+            bankTranNo: { type: String },
+            payDate: { type: String },
+            responseCode: { type: String },
+            transactionNo: { type: String },
+            transactionStatus: { type: String },
+            txnRef: { type: String },
+        },
         note: {
             type: String,
             maxLength: 200,

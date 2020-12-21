@@ -70,10 +70,7 @@ const orderCtl = {
             }
 
             const total = products.reduce((a, b) => a + b.price * b.amount, 0)
-            let payment = {}
-            if (typePayment > 0) {
-                ;(payment.typePayment = typePayment), (payment.status = 1)
-            }
+
             const data = {
                 promotion,
                 products,
@@ -83,7 +80,7 @@ const orderCtl = {
                 total: total + shipMoney,
                 user: req.user.id,
                 note: note ? note : '',
-                payment,
+                typePayment: typePayment ? typePayment : 0,
             }
 
             if (!promotion) delete data['promotion']
@@ -302,7 +299,6 @@ const orderCtl = {
         try {
             const id = req.params.id
             const order = await Order.findOne({ _id: id, deletedAt: undefined })
-
             if (!order) {
                 return res.status(400).json({ msg: 'Order not found' })
             }

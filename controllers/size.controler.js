@@ -27,7 +27,12 @@ const sizeCtl = {
     },
     delete: async (req, res, next) => {
         try {
-            await Size.findByIdAndDelete(req.params.id)
+            const { id } = req.params
+            const size = Size.findOne({ _id: id })
+            if (!size) {
+                return res.status(404).json({ msg: 'size not found' })
+            }
+            await Size.updateOne({ _id: id }, { deletedAt: new Date() })
 
             return res.status(200).json({ msg: 'Deleted Success!' })
         } catch (err) {
@@ -36,7 +41,12 @@ const sizeCtl = {
     },
     update: async (req, res, next) => {
         try {
-            const { id, name } = req.body
+            const { name } = req.body
+            const { id } = req.params
+            const size = await Size.findOne({ _id: id })
+            if (!size) {
+                return res.status(404).json({ msg: 'size not found' })
+            }
             if (!name) {
                 return res.status(400).json({
                     msg: 'Please fill in all fields.',
@@ -45,7 +55,7 @@ const sizeCtl = {
             const data = { name }
 
             _.omitBy(data, _.isNull)
-            await Size.findOneAndUpdate({ _id: id }, data)
+            await Size.updateOne({ _id: id }, data)
 
             return res.status(200).json({ msg: 'Update Success!' })
         } catch (err) {
@@ -63,8 +73,10 @@ const sizeCtl = {
     },
     getOne: async (req, res, next) => {
         try {
-            const size = await Size.find(req.params.id)
-
+            const size = await Size.findOne({ _id: req.params.id })
+            if (!size) {
+                return res.status(404).json({ msg: 'size not found' })
+            }
             return res.status(200).json(size)
         } catch (err) {
             return res.status(500).json({ msg: err.message })

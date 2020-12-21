@@ -41,6 +41,10 @@ const userSchema = new mongoose.Schema(
                 amount: {
                     type: Number,
                 },
+                sizeId: {
+                    type: mongoose.Schema.Types.ObjectId,
+                    ref: 'Size',
+                },
             },
         ],
         nation: {

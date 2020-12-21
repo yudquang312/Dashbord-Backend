@@ -102,7 +102,6 @@ const userCtl = {
         try {
             const { email, password } = req.body
             const user = await User.findOne({ email, deletedAt: undefined })
-
             if (!user) {
                 return res
                     .status(400)
@@ -115,12 +114,12 @@ const userCtl = {
                 return res.status(400).json({ msg: 'Password is incorrect.' })
             }
 
-            const refresh_token = createRefreshToken({ id: user.id })
+            const refresh_token = createRefreshToken({ id: user._id })
             res.cookie('refresh_token', refresh_token, {
                 httpOnly: false,
+                path: '/user/refresh_token',
                 maxAge: 30 * 24 * 60 * 60 * 1000, // 7 days
             })
-            // console.log(res)
             res.status(200).json({ msg: 'Login success!' })
         } catch (e) {
             return res.status(500).json({
@@ -205,8 +204,15 @@ const userCtl = {
     },
     getUserInfor: async (req, res, next) => {
         try {
-            const user = await User.findById(req.user.id).select('-password')
-
+            const user = await User.findById(req.user.id)
+                .select('-password')
+                .populate({
+                    path: 'cart.productId',
+                    select: '-inputPrice',
+                })
+                .populate({
+                    path: 'cart.sizeId',
+                })
             res.status(200).json(user)
         } catch (err) {
             return res.status(500).json({ msg: err.message })
@@ -223,7 +229,7 @@ const userCtl = {
     },
     logout: async (req, res) => {
         try {
-            res.clearCookie('refresh_token')
+            res.clearCookie('refresh_token', { path: '/user/refresh_token' })
             return res.status(200).json({ msg: 'Logged out.' })
         } catch (err) {
             return res.status(500).json({ msg: err.message })
@@ -313,7 +319,6 @@ const userCtl = {
                 const refresh_token = createRefreshToken({ id: user.id })
                 res.cookie('refresh_token', refresh_token, {
                     httpOnly: true,
-                    path: '/user/refresh_token',
                     maxAge: 30 * 24 * 60 * 60 * 1000, // 7 ngay
                 })
                 res.status(200).json({ msg: 'Login succes' })
@@ -383,7 +388,6 @@ const userCtl = {
                 const refresh_token = createRefreshToken({ id: newUser._id })
                 res.cookie('refresh_token', refresh_token, {
                     httpOnly: true,
-                    path: '/user/refresh_token',
                     maxAge: 30 * 24 * 60 * 60 * 1000, // 7 ngay
                 })
                 res.status(200).json({ msg: 'Login succes' })
@@ -407,7 +411,7 @@ const userCtl = {
                 },
             )
 
-            return res.json({ msg: 'Added to cart' })
+            return res.json({ msg: 'Change to cart' })
         } catch (e) {
             return res.status(500).json({ msg: e.msg })
         }
