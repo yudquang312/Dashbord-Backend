@@ -130,6 +130,9 @@ const productCtl = {
     },
     getAllProduct: async (req, res, next) => {
         try {
+            const page = req.query.page * 1 || 1
+            const limit = req.query.limit * 1 || 2
+            const skip = (page - 1) * limit
             const features = new APIfeatures(
                 Product.find({ deteledAt: undefined })
                     .populate({
@@ -156,11 +159,16 @@ const productCtl = {
             )
                 .filtering()
                 .sorting()
-                .paginating()
-
-            const products = await features.query
-
-            return res.status(200).json(products)
+            const total = await features.query
+            const products = await features.paginating().query
+            return res.status(200).json({
+                products,
+                query: {
+                    total: total.length,
+                    limit: req.query.limit | 2,
+                    page: req.query.page | 1,
+                },
+            })
         } catch (err) {
             return res.status(500).json({ msg: err.message })
         }
@@ -189,14 +197,14 @@ const productCtl = {
             const id = req.params.id
             const product = await Product.findOne({ _id: id })
                 .populate({
+                    path: 'colors.tags',
+                })
+                .populate({
                     path: 'createBy',
                     select: 'name',
                 })
                 .populate({
                     path: 'type',
-                })
-                .populate({
-                    path: 'colors',
                 })
                 .populate({
                     path: 'category',

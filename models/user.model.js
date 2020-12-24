@@ -37,13 +37,16 @@ const userSchema = new mongoose.Schema(
                 productId: {
                     type: mongoose.Schema.Types.ObjectId,
                     ref: 'Product',
+                    required: [true, 'Please choose product'],
                 },
                 amount: {
                     type: Number,
+                    required: [true, 'Please choose quality'],
                 },
                 sizeId: {
                     type: mongoose.Schema.Types.ObjectId,
                     ref: 'Size',
+                    required: [true, 'Please choose size'],
                 },
             },
         ],

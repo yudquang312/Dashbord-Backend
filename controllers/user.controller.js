@@ -207,12 +207,18 @@ const userCtl = {
             const user = await User.findById(req.user.id)
                 .select('-password')
                 .populate({
-                    path: 'cart.productId',
-                    select: '-inputPrice',
+                    path: 'cart.sizeId.size',
+                    // select: 'name',
                 })
                 .populate({
-                    path: 'cart.sizeId',
+                    path: 'cart.productId',
+                    select: '-inputPrice',
+                    populate: {
+                        path: 'sizes.sizeId',
+                    },
                 })
+                .exec()
+            console.log(typeof user.cart[0].sizeId, typeof user._id)
             res.status(200).json(user)
         } catch (err) {
             return res.status(500).json({ msg: err.message })
