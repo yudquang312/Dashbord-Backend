@@ -16,7 +16,9 @@ class APIfeatures {
             /\b(gte|gt|lt|lte|regex)\b/g,
             (match) => '$' + match,
         )
-        this.query.find(JSON.parse(queryStr))
+        const data = JSON.parse(queryStr)
+        data.name['$options'] = 'i'
+        this.query.find(data)
 
         return this
     }

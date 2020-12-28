@@ -208,7 +208,7 @@ const userCtl = {
                 .select('-password')
                 .populate({
                     path: 'cart.sizeId',
-                    // select: 'name',
+                    model: 'Size',
                 })
                 .populate({
                     path: 'cart.productId',
