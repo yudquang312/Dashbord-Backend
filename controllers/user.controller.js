@@ -7,7 +7,7 @@ const { google } = require('googleapis')
 const { OAuth2 } = google.auth
 const fetch = require('node-fetch')
 const client = new OAuth2(process.env.MAILLING_SERVICE_CLIENT_ID)
-
+const mongoose = require('mongoose')
 const {
     CLIENT_URL,
     ACCESS_TOKEN_SECRET,
@@ -405,6 +405,11 @@ const userCtl = {
     changeCart: async (req, res, next) => {
         try {
             const { user, body } = req
+
+            const cart = body.cart.map((ca) => {
+                ca.sizeId = mongoose.Types.ObjectId(ca.sizeId)
+                return ca
+            })
             const existUser = await User.findById(user.id)
             if (!existUser) {
                 return res.status(400).json({ msg: 'User does not exist' })
@@ -413,7 +418,7 @@ const userCtl = {
             await User.findOneAndUpdate(
                 { _id: user.id },
                 {
-                    cart: body.cart,
+                    cart: cart,
                 },
             )
 

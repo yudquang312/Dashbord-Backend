@@ -1,5 +1,5 @@
 const Product = require('../models/product.model')
-
+const mongoose = require('mongoose')
 class APIfeatures {
     constructor(query, queryString) {
         this.query = query
@@ -101,7 +101,6 @@ const productCtl = {
                     msg: 'Have error amount',
                 })
             }
-
             const newProduct = new Product({
                 name,
                 type,
@@ -132,9 +131,6 @@ const productCtl = {
     },
     getAllProduct: async (req, res, next) => {
         try {
-            const page = req.query.page * 1 || 1
-            const limit = req.query.limit * 1 || 2
-            const skip = (page - 1) * limit
             const features = new APIfeatures(
                 Product.find({ deteledAt: undefined })
                     .populate({
@@ -198,9 +194,8 @@ const productCtl = {
         try {
             const id = req.params.id
             const product = await Product.findOne({ _id: id })
-                .populate({
-                    path: 'colors.tags',
-                })
+                .select('-inputPrice')
+                .populate([{ path: 'colors', model: 'Color' }])
                 .populate({
                     path: 'createBy',
                     select: 'name',
@@ -220,7 +215,7 @@ const productCtl = {
                 .populate({
                     path: 'material',
                 })
-                .select('-inputPrice')
+                .exec()
             if (!product) {
                 return res.status(400).json({ msg: 'Product not found' })
             }
