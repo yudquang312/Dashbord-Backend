@@ -17,7 +17,9 @@ class APIfeatures {
             (match) => '$' + match,
         )
         const data = JSON.parse(queryStr)
-        data.name['$options'] = 'i'
+        if (data.name) {
+            data.name['$options'] = 'i'
+        }
         this.query.find(data)
 
         return this
