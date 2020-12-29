@@ -33,4 +33,6 @@ router.post('/facebook_login', userCtl.facebookLogin)
 
 router.patch('/cart', auth, userCtl.changeCart)
 
+router.get('/cart', auth, userCtl.getCart)
+
 module.exports = router

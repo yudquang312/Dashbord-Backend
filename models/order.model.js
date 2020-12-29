@@ -7,6 +7,16 @@ const orderSchema = new mongoose.Schema(
             required: [true, 'User is require'],
             ref: 'User',
         },
+        recipientName: {
+            type: String,
+            minlength: 3,
+            required: [true, "Recipient's name is require"],
+        },
+        recipientPhone: {
+            type: String,
+            length: 10,
+            required: [true, "Recipient's phone is require"],
+        },
         dateOrder: {
             type: Date,
             default: Date.now(),

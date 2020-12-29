@@ -204,21 +204,7 @@ const userCtl = {
     },
     getUserInfor: async (req, res, next) => {
         try {
-            const user = await User.findById(req.user.id)
-                .select('-password')
-                .populate({
-                    path: 'cart.sizeId',
-                    model: 'Size',
-                })
-                .populate({
-                    path: 'cart.productId',
-                    select: '-inputPrice',
-                    populate: {
-                        path: 'sizes.sizeId',
-                    },
-                })
-                .exec()
-            // console.log(typeof user.cart[0].sizeId, typeof user._id)
+            const user = await User.findById(req.user.id).select('-password')
             res.status(200).json(user)
         } catch (err) {
             return res.status(500).json({ msg: err.message })
@@ -425,6 +411,26 @@ const userCtl = {
             return res.json({ msg: 'Change to cart' })
         } catch (e) {
             return res.status(500).json({ msg: e.msg })
+        }
+    },
+    getCart: async (req, res, next) => {
+        try {
+            const cart = await User.findById(req.user.id)
+                .select('cart')
+                .populate({
+                    path: 'cart.sizeId',
+                    model: 'Size',
+                })
+                .populate({
+                    path: 'cart.productId',
+                    select: '-inputPrice',
+                    populate: {
+                        path: 'sizes.sizeId',
+                    },
+                })
+            res.status(200).json(cart)
+        } catch (err) {
+            return res.status(500).json({ msg: err.message })
         }
     },
 }

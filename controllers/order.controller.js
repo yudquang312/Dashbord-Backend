@@ -4,7 +4,6 @@ const APIfeatures = require('../helper/filter')
 
 const orderCtl = {
     checkOrder: async (req, res, next) => {
-        console.log(3)
         try {
             const products = req.body.products
             const query = products.map((pd) => ({
@@ -61,9 +60,18 @@ const orderCtl = {
                 shipMoney,
                 note,
                 typePayment,
+                recipientName,
+                recipientPhone,
             } = req.body
 
-            if (!products || products.length === 0 || !address || !shipMoney) {
+            if (
+                !products ||
+                products.length === 0 ||
+                !address ||
+                !shipMoney ||
+                !recipientName ||
+                !recipientPhone
+            ) {
                 return res.status(400).json({
                     msg: 'Please fill in all fields.',
                 })
@@ -81,6 +89,8 @@ const orderCtl = {
                 user: req.user.id,
                 note: note ? note : '',
                 typePayment: typePayment ? typePayment : 0,
+                recipientName,
+                recipientPhone,
             }
 
             if (!promotion) delete data['promotion']
@@ -426,7 +436,7 @@ const orderCtl = {
                     })
                     .populate({
                         path: 'products.productId',
-                        select: 'name',
+                        // select: 'name',
                     }),
                 req.query,
             )
