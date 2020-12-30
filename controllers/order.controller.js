@@ -403,12 +403,17 @@ const orderCtl = {
                 .lean()
                 .populate({
                     path: 'user',
+                    select: '-password',
                 })
                 .populate({
                     path: 'promotion',
                 })
                 .populate({
-                    path: 'product.productId',
+                    path: 'products.productId',
+                    select: '-inputPrice -sizes',
+                })
+                .populate({
+                    path: 'products.sizeId',
                     select: '-inputPrice -sizes',
                 })
                 .sort({ createdAt: -1 })
