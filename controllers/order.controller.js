@@ -377,7 +377,11 @@ const orderCtl = {
                     path: 'promotion',
                 })
                 .populate({
-                    path: 'product.productId',
+                    path: 'products.productId',
+                    select: '-inputPrice -sizes -sold',
+                })
+                .populate({
+                    path: 'products.sizeId',
                 })
 
             if (!order) {
@@ -414,7 +418,6 @@ const orderCtl = {
                 })
                 .populate({
                     path: 'products.sizeId',
-                    select: '-inputPrice -sizes',
                 })
                 .sort({ createdAt: -1 })
 
@@ -442,6 +445,9 @@ const orderCtl = {
                     })
                     .populate({
                         path: 'products.productId',
+                    })
+                    .populate({
+                        path: 'products.sizeId',
                     }),
                 req.query,
             )
@@ -472,6 +478,9 @@ const orderCtl = {
                 .populate({
                     path: 'products.productId',
                     select: '-inputPrice -sizes -sold',
+                })
+                .populate({
+                    path: 'products.sizeId',
                 })
             return res.status(200).json(orders)
         } catch (e) {
