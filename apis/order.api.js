@@ -11,10 +11,13 @@ router
 router.route('/orders/:id').get(auth, orderCtl.getOrderByUser)
 router.route('/admin/orders').get(auth, authAdmin, orderCtl.getAllOrder)
 router
+    .route('/admin/orders/user/:id')
+    .get(auth, authAdmin, orderCtl.getAllOrderUserByAdmin)
+router
     .route('/admin/orders/:id')
     .get(auth, authAdmin, orderCtl.getOrder)
     .patch(auth, authAdmin, orderCtl.updateStatusByAdmin)
-    .delete(auth, authAdmin, orderCtl.detele)
+    .delete(auth, authAdmin, orderCtl.delete)
 
 router
     .route('/admin/orders/confirm/:id')

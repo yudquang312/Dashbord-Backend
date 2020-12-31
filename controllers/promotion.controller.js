@@ -11,11 +11,9 @@ const promotionCtl = {
                     .status(400)
                     .json({ msg: 'Please fill in all fields.' })
             }
-
             if (
-                dateBegin < dateEnd ||
-                dateBegin < Date.now() ||
-                dateEnd < Date.now()
+                new Date(dateBegin) > new Date(dateEnd) ||
+                new Date(dateEnd) < Date.now()
             ) {
                 return res.status(400).json({ msg: 'Date invalid.' })
             }
@@ -63,7 +61,7 @@ const promotionCtl = {
     getPromotion: async (req, res, next) => {
         try {
             const { id } = req.body
-            const promotion = await getPromotion.findOne({ _id: id })
+            const promotion = await Promotion.findOne({ _id: id })
             if (!promotion) {
                 return res.status(400).json({ msg: 'promotion is invalid' })
             }
@@ -74,7 +72,7 @@ const promotionCtl = {
     },
     getAllPromotion: async (req, res, next) => {
         try {
-            const promotions = await getPromotion.find({ code })
+            const promotions = await Promotion.find()
             return res.status(200).json(promotions)
         } catch (e) {
             return res.status(400).json({ msg: e.message })
@@ -91,7 +89,7 @@ const promotionCtl = {
                 dateEnd,
                 percent,
             }
-            const promotion = await getPromotion.findOne({ _id: id })
+            const promotion = await Promotion.findOne({ _id: id })
             if (!promotion) {
                 return res.status(400).json({ msg: 'promotion not found' })
             }

@@ -13,5 +13,5 @@ router
     .delete(auth, authAdmin, promotionCtl.delete)
     .patch(auth, authAdmin, promotionCtl.update)
 
-router.route('/promotions/check/:code').get(promotionCtl.checkPromotion)
+router.route('/check/promotions/:code').get(promotionCtl.checkPromotion)
 module.exports = router

@@ -1,7 +1,7 @@
 const Order = require('../models/order.model')
 const Product = require('../models/product.model')
 const APIfeatures = require('../helper/filter')
-
+const User = require('../models/user.model')
 const orderCtl = {
     checkOrder: async (req, res, next) => {
         try {
@@ -489,8 +489,29 @@ const orderCtl = {
             return res.status(500).json({ msg: e.message })
         }
     },
-
-    detele: async (req, res, next) => {
+    getAllOrderUserByAdmin: async (req, res, next) => {
+        try {
+            const { id } = req.params
+            const user = await User.findOne({ _id: id })
+            if (!user) {
+                return res.status(400).json({ msg: 'Id user invalid' })
+            }
+            const orders = await Order.find({ user: user._id })
+                .populate({
+                    path: 'promotion',
+                })
+                .populate({
+                    path: 'products.productId',
+                })
+                .populate({
+                    path: 'products.sizeId',
+                })
+            return res.status(200).json(orders)
+        } catch (e) {
+            return res.status(500).json({ msg: e.message })
+        }
+    },
+    delete: async (req, res, next) => {
         try {
             const { id } = req.params
 
