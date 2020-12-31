@@ -13,9 +13,18 @@ const paymentCtl = {
                 shipMoney,
                 note,
                 typePayment,
+                recipientName,
+                recipientPhone,
             } = req.body
 
-            if (!products || products.length === 0 || !address || !shipMoney) {
+            if (
+                !products ||
+                products.length === 0 ||
+                !address ||
+                !shipMoney ||
+                !recipientName ||
+                !recipientPhone
+            ) {
                 return res.status(400).json({
                     msg: 'Please fill in all fields.',
                 })
@@ -33,6 +42,8 @@ const paymentCtl = {
                 user: req.user.id,
                 note: note ? note : '',
                 typePayment: typePayment ? typePayment : 0,
+                recipientName,
+                recipientPhone,
             }
 
             if (!promotion) delete data['promotion']

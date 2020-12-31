@@ -433,6 +433,18 @@ const userCtl = {
             return res.status(500).json({ msg: err.message })
         }
     },
+    getUserInforByAdmin: async (req, res, next) => {
+        try {
+            const { id } = req.params
+            const user = await User.findOne({ _id: id }).select('-password')
+            if (!user) {
+                return res.status(400).json({ msg: 'User not found' })
+            }
+            return res.status(200).json(users)
+        } catch (e) {
+            return res.status(500).json({ msg: e.message })
+        }
+    },
 }
 
 const validateEmail = (email) => {

@@ -19,6 +19,7 @@ router.get('/infor', auth, userCtl.getUserInfor)
 
 router.get('/all_infor', auth, authAdmin, userCtl.getUsersAllInfor)
 
+router.get('/admin/:id', auth, authAdmin, userCtl.getUserInforByAdmin)
 router.get('/logout', userCtl.logout)
 
 router.delete('/delete/:id', auth, authAdmin, userCtl.deleteUser)
