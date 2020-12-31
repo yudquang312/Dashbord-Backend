@@ -49,6 +49,7 @@ app.use('/api', require('./apis/category.api'))
 app.use('/api', require('./apis/order.api'))
 app.use('/api', require('./apis/comment.api'))
 app.use('/api', require('./apis/payment.api'))
+app.use('/api', require('./apis/promotion.api'))
 //connect database
 require('./helper/init-mongoose')
 // Routes

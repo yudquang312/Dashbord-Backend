@@ -4,33 +4,35 @@ const promotionSchemna = new mongoose.Schema(
     {
         name: {
             type: String,
-            required: true,
+            required: [true, 'Name is require'],
         },
         description: {
             type: String,
-            required: true,
+            required: [true, 'Description is require'],
         },
         dateBegin: {
             type: Date,
+            required: [true, 'Date begin is require'],
         },
         dateEnd: {
             type: Date,
+            required: [true, 'Date end is require'],
         },
-        type: {
-            type: String,
-            enum: ['product', 'order'],
-            required: true,
-        },
+        // type: {
+        //     type: String,
+        //     enum: ['product', 'order'],
+        //     required: true,
+        // },
         code: {
             type: String,
-            required: true,
+            required: [true, 'Code begin is require'],
             unique: true,
         },
         percent: {
             type: Number,
             min: 0,
             max: 100,
-            required: true,
+            required: [true, 'Percent begin is require'],
         },
     },
     {

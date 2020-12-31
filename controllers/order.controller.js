@@ -77,7 +77,9 @@ const orderCtl = {
                 })
             }
 
-            const total = products.reduce((a, b) => a + b.price * b.amount, 0)
+            const total =
+                products.reduce((a, b) => a + b.price * b.amount, 0) *
+                (1 - (promotion || 0) / 100)
 
             const data = {
                 promotion,

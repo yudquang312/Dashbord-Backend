@@ -440,7 +440,7 @@ const userCtl = {
             if (!user) {
                 return res.status(400).json({ msg: 'User not found' })
             }
-            return res.status(200).json(users)
+            return res.status(200).json(user)
         } catch (e) {
             return res.status(500).json({ msg: e.message })
         }
