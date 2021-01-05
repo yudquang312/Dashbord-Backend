@@ -7,7 +7,7 @@ const orderCtl = {
         try {
             const products = req.body.products
             const query = products.map((pd) => ({
-                _id: pd.productId,
+                _id: pd.productId._id,
                 'sizes.sizeId': pd.sizeId,
             }))
 
@@ -20,32 +20,34 @@ const orderCtl = {
                     path: 'sizes.sizeId',
                 })
 
-            if (getProducts.length !== products.length) {
-                return res.status(400).json({
-                    msg: 'Have product is not valid',
-                })
-            }
-
+            // if (getProducts.length !== products.length) {
+            //     return res.status(400).json({
+            //         msg: 'Have product is not valid',
+            //     })
+            // }
             products.sort((a, b) => a.productId - b.productId)
             for (let i = 0; i < products.length; i++) {
-                const find = getProducts[i].sizes.find((el) => {
-                    return el.sizeId._id + '' == products[i].sizeId + ''
+                const findProduct = getProducts.find((el) => {
+                    return el._id + '' == products[i].productId._id + ''
                 })
-                if (getProducts[i].amount === 0 || find.amount === 0) {
+                const findSize = findProduct.sizes.find((el) => {
+                    return el.sizeId._id + '' == products[i].sizeId._id + ''
+                })
+                if (findProduct.amount === 0 || findSize.amount === 0) {
                     return res.status(400).json({
-                        msg: `Product ${getProducts[i].name} with size ${find.sizeId.name} out of stock`,
+                        msg: `Product ${findProduct.name} with size ${findSize.sizeId.name} out of stock`,
                     })
                 }
                 if (
-                    products[i].amount > getProducts[i].amount ||
-                    products[i].amount > find.amount
+                    products[i].amount > findProduct.amount ||
+                    products[i].amount > findSize.amount
                 ) {
                     return res.status(400).json({
-                        msg: `The number of ordered products ${getProducts[i].name} with size ${find.sizeId.name} is greater than the quantity of the stock`,
+                        msg: `The number of ordered products ${findProduct.name} with size ${findSize.sizeId.name} is greater than the quantity of the stock`,
                     })
                 }
             }
-
+            req.getProducts = getProducts
             next()
         } catch (e) {
             return res.status(400).json({ msg: e.message })
@@ -79,7 +81,7 @@ const orderCtl = {
 
             const total =
                 products.reduce((a, b) => a + b.price * b.amount, 0) *
-                (1 - (promotion || 0) / 100)
+                (1 - (promotion ? promotion.percent : 0) / 100)
 
             const data = {
                 promotion,

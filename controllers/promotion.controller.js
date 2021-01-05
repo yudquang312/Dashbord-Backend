@@ -41,14 +41,14 @@ const promotionCtl = {
     checkPromotion: async (req, res, next) => {
         try {
             const { code } = req.params
-            const promotion = await getPromotion.findOne({ code })
+            const promotion = await Promotion.findOne({ code })
             if (!promotion) {
                 return res.status(400).json({ msg: 'promotion is invalid' })
             }
-            if (Date.now() > dateEnd) {
+            if (Date.now() > promotion.dateEnd) {
                 return res.status(400).json({ msg: 'promotion is expired' })
             }
-            if (Date.now() < dateBegin) {
+            if (Date.now() < promotion.dateBegin) {
                 return res
                     .status(400)
                     .json({ msg: 'promotion is not yet applied' })

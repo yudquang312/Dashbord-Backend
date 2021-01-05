@@ -25,15 +25,15 @@ router.get('/logout', userCtl.logout)
 
 router.delete('/delete/:id', auth, authAdmin, userCtl.deleteUser)
 
-router.patch('/update', auth, userCtl.updateUser)
+router.put('/update', auth, userCtl.updateUser)
 
-router.patch('/update_role/:id', auth, authAdmin, userCtl.updateUsersRole)
+router.put('/update_role/:id', auth, authAdmin, userCtl.updateUsersRole)
 
 router.post('/google_login', userCtl.googleLogin)
 
 router.post('/facebook_login', userCtl.facebookLogin)
 
-router.patch('/cart', auth, userCtl.changeCart)
+router.put('/cart', auth, userCtl.changeCart)
 
 router.get('/cart', auth, userCtl.getCart)
 

@@ -179,14 +179,23 @@ const userCtl = {
     resetPassword: async (req, res, next) => {
         try {
             const { user, body } = req
-            const { password } = body
-
-            if (!password || !user) {
+            const { oldPassword, newPassword } = body
+            if (!oldPassword || !newPassword || !user) {
                 return res
                     .status(400)
                     .json({ msg: 'Please fill in all fields.' })
             }
-            const hashPassword = await bcrypt.hash(password, 12)
+            const getUser = await User.findOne({
+                _id: user.id,
+            }).lean()
+            if (!getUser) {
+                return res.status(400).json({ msg: 'User not found' })
+            }
+            const isMatch = await bcrypt.compare(oldPassword, getUser.password)
+            if (!isMatch) {
+                return res.status(400).json({ msg: 'Password is incorrect.' })
+            }
+            const hashPassword = await bcrypt.hash(newPassword, 12)
 
             await User.findOneAndUpdate(
                 { _id: user.id },
@@ -197,6 +206,7 @@ const userCtl = {
 
             res.status(200).json({ msg: 'Password successfully changed!' })
         } catch (e) {
+            console.log(e)
             return res.status(500).json({
                 msg: e.message,
             })
@@ -390,6 +400,7 @@ const userCtl = {
     },
     changeCart: async (req, res, next) => {
         try {
+            console.log(1)
             const { user, body } = req
 
             const cart = body.cart.map((ca) => {
@@ -410,6 +421,7 @@ const userCtl = {
 
             return res.json({ msg: 'Change to cart' })
         } catch (e) {
+            console.log(err)
             return res.status(500).json({ msg: e.msg })
         }
     },

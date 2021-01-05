@@ -11,6 +11,6 @@ router
     .route('/products/:id')
     .get(productCtl.getProduct)
     .delete(auth, authAdmin, productCtl.deleteProduct)
-    .patch(auth, authAdmin, productCtl.update)
+    .put(auth, authAdmin, productCtl.update)
 
 module.exports = router

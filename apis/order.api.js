@@ -16,12 +16,12 @@ router
 router
     .route('/admin/orders/:id')
     .get(auth, authAdmin, orderCtl.getOrder)
-    .patch(auth, authAdmin, orderCtl.updateStatusByAdmin)
+    .put(auth, authAdmin, orderCtl.updateStatusByAdmin)
     .delete(auth, authAdmin, orderCtl.delete)
 
 router
     .route('/admin/orders/confirm/:id')
-    .patch(auth, authAdmin, orderCtl.cancel_confirmOrderByAdmin)
+    .put(auth, authAdmin, orderCtl.cancel_confirmOrderByAdmin)
 router.route('/orders/cancel/:id').patch(auth, orderCtl.cancelOrderByUser)
 
 module.exports = router

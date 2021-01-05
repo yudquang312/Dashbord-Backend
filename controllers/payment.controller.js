@@ -2,6 +2,7 @@ const Payment = require('../models/payment.model')
 const dateformat = require('dateformat')
 const querystring = require('qs')
 const Order = require('../models/order.model')
+const Product = require('../models/product.model')
 const sha256 = require('sha256')
 const paymentCtl = {
     create_payment_url: async (req, res, next) => {
@@ -30,7 +31,9 @@ const paymentCtl = {
                 })
             }
 
-            const total = products.reduce((a, b) => a + b.price * b.amount, 0)
+            const total =
+                products.reduce((a, b) => a + b.price * b.amount, 0) *
+                (1 - (promotion ? promotion.percent : 0) / 100)
 
             const data = {
                 promotion,
@@ -103,8 +106,9 @@ const paymentCtl = {
             const { vnpay } = req.body
             const order = JSON.parse(req.cookies.order)
             order.vnpay = vnpay
-            if (vnpay.responseCode == '00') {
-                order.save()
+            const newOrder = new Order(order)
+            if (vnpay.vnp_ResponseCode == '00') {
+                newOrder.save()
                 let query = order.products.map((item) => {
                     return {
                         updateOne: {
