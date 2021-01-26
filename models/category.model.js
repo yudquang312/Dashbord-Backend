@@ -7,6 +7,9 @@ const categorySchema = new mongoose.Schema(
             required: [true, 'Please enter category name '],
             unique: true,
         },
+        deletedAt: {
+            type: Date,
+        },
     },
     {
         timestamps: true,

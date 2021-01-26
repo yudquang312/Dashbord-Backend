@@ -120,7 +120,7 @@ const userCtl = {
                 path: '/user/refresh_token',
                 maxAge: 30 * 24 * 60 * 60 * 1000, // 7 days
             })
-            res.status(200).json({ msg: 'Login success!' })
+            res.status(200).json({ msg: 'Login success!', user: user })
         } catch (e) {
             return res.status(500).json({
                 msg: e.message,
@@ -222,7 +222,9 @@ const userCtl = {
     },
     getUsersAllInfor: async (req, res, next) => {
         try {
-            const users = await User.find().select('-password')
+            const users = await User.find({ deletedAt: undefined }).select(
+                '-password',
+            )
 
             res.status(200).json(users)
         } catch (err) {
@@ -239,8 +241,12 @@ const userCtl = {
     },
     deleteUser: async (req, res) => {
         try {
-            await User.findByIdAndUpdate(
-                { _id: id, deletedAt: undefined },
+            // console.log('delete User')
+            // console.log(req.params.id)
+            // const user = await User.findById(req.params.id)
+            // console.log(user)
+            await User.updateOne(
+                { _id: req.params.id },
                 { deletedAt: Date.now() },
             )
 

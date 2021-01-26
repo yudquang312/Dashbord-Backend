@@ -154,6 +154,10 @@ const orderCtl = {
                     msg: `Don\'t ${confirm > 0 ? 'confirm' : 'cancel'} order.`,
                 })
             }
+            if (confirm === -1) {
+                await Order.deleteOne({ _id: id })
+                return res.status(200).json({ msg: 'Order has been canceled' })
+            }
             const data = {
                 confirm: confirm,
                 status: confirm > 0 ? 0 : -1,

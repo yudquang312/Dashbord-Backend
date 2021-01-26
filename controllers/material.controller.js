@@ -67,7 +67,7 @@ const materialCtl = {
     },
     getAll: async (req, res, next) => {
         try {
-            const materials = await Material.find()
+            const materials = await Material.find({ deletedAt: undefined })
 
             return res.status(200).json(materials)
         } catch (err) {

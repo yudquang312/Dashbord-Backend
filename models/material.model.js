@@ -7,6 +7,9 @@ const materialSchema = new mongoose.Schema(
             required: [true, 'Please enter material name '],
             unique: true,
         },
+        deletedAt: {
+            type: Date,
+        },
     },
     {
         timestamps: true,

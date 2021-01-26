@@ -65,7 +65,7 @@ const categoryCtl = {
     },
     getAll: async (req, res, next) => {
         try {
-            const categories = await Category.find()
+            const categories = await Category.find({ deletedAt: undefined })
 
             return res.status(200).json(categories)
         } catch (err) {

@@ -6,6 +6,9 @@ const typeProductSchema = new mongoose.Schema(
             type: String,
             required: [true, 'Please enter type product name'],
         },
+        deletedAt: {
+            type: Date,
+        },
     },
     {
         timestamps: true,

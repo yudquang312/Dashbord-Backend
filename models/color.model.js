@@ -12,6 +12,9 @@ const colorSchema = new mongoose.Schema(
             required: [true, 'Please enter color code '],
             unique: true,
         },
+        deletedAt: {
+            type: Date,
+        },
     },
     {
         timestamps: true,

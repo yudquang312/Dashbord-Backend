@@ -62,7 +62,7 @@ const colorCtl = {
     },
     getAll: async (req, res, next) => {
         try {
-            const colors = await Color.find()
+            const colors = await Color.find({ deletedAt: undefined })
 
             return res.status(200).json(colors)
         } catch (err) {

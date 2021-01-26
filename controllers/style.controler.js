@@ -65,7 +65,7 @@ const styleCtl = {
     },
     getAll: async (req, res, next) => {
         try {
-            const styles = await Style.find()
+            const styles = await Style.find({ deletedAt: undefined })
 
             return res.status(200).json(styles)
         } catch (err) {

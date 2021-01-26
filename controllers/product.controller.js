@@ -48,6 +48,7 @@ class APIfeatures {
 const productCtl = {
     create: async (req, res, next) => {
         try {
+            console.log(req.body)
             const {
                 name,
                 type,
@@ -80,12 +81,14 @@ const productCtl = {
                 !material ||
                 !category
             ) {
+                console.log('Please fill in all fields.')
                 return res.status(400).json({
                     msg: 'Please fill in all fields.',
                 })
             }
             const nameExisted = await Product.findOne({ name })
             if (nameExisted) {
+                console.log('This product name already exists .')
                 return res.status(400).json({
                     msg: 'This product name already exists .',
                 })
@@ -117,7 +120,7 @@ const productCtl = {
                 promotion,
                 limited,
                 style,
-                createBy: req.user.id,
+                createBy: req.body.createBy,
                 material,
                 category,
             })
@@ -128,13 +131,14 @@ const productCtl = {
             const product = await newProduct.save()
             return res.status(201).json(product)
         } catch (e) {
+            console.log(e.message)
             return res.status(500).json({ msg: e.message })
         }
     },
     getAllProduct: async (req, res, next) => {
         try {
             const features = new APIfeatures(
-                Product.find({ deteledAt: undefined })
+                Product.find({ deletedAt: undefined })
                     .populate({
                         path: 'createBy',
                         select: 'name',
@@ -165,8 +169,8 @@ const productCtl = {
                 products,
                 query: {
                     total: total.length,
-                    limit: req.query.limit | 2,
-                    page: req.query.page | 1,
+                    limit: req.query.limit || 2,
+                    page: req.query.page || 1,
                 },
             })
         } catch (err) {
@@ -178,14 +182,14 @@ const productCtl = {
             const id = req.params.id
             const product = await Product.findOne({
                 _id: id,
-                deteledAt: undefined,
+                deletedAt: undefined,
             })
             if (!product) {
                 return res.status(400).json({ msg: 'Product not existed' })
             }
             await Product.updateOne(
-                { _id: id, deteledAt: undefined },
-                { deteledAt: Date.now() },
+                { _id: id, deletedAt: undefined },
+                { deletedAt: Date.now() },
             )
             return res.status(200).json({ msg: 'Update success' })
         } catch (e) {
@@ -280,7 +284,8 @@ const productCtl = {
                     if (!data[key]) delete data[key]
                 }
             }
-            await Product.findOneAndUpdate({ _id: id }, data)
+            // console.log(data)
+            await Product.findOneAndUpdate({ _id: id }, { $set: data })
             return res.status(200).json({ msg: 'Update success' })
         } catch (e) {
             return res.status(500).json({ msg: e.message })

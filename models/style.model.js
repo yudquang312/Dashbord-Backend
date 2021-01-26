@@ -7,6 +7,9 @@ const styleSchema = new mongoose.Schema(
             required: [true, 'Please enter style name '],
             unique: true,
         },
+        deletedAt: {
+            type: Date,
+        },
     },
     {
         timestamps: true,
